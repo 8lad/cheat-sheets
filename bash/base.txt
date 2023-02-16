@@ -1,0 +1,49 @@
+Basic commands
+-- clear -> clear the console
+-- rm -> remove file or directory -> rm text.txt
+-- echo -> allows to show text entered as an argument - echo Hello -> Hello
+-- read -> allows to read user input info, and write it to the variable
+-- cat fileName.txt -> print the text in the bash
+-- ls -> list of files in current directory
+-- ls -l -> show the lish of files with extra info, we can see some premissions
+-- wc -w fileName.txt -> return file name and the amount of words in the file -> 6 fileName
+-- wc -w < fileName.txt -> return amount of words
+-- i -> set insert mode in vim for editing
+-- Esc on keyboard -> unset insert mode
+-- :w -> vim write the file
+-- :wq -> vim go out and save
+-- :q -> exit from file
+-- :q! -> exite without saving
+-- pwd -> can check the path where do we now, can read as print working directory, example - my-comp/test/bash
+-- bash -> can run the command in file with the end .sh 
+-- echo $SHELL -> where the $SHELL is the variable. This variable shall represent a pathname of the user's preferred command language interpreter. If this interpreter does not conform to the Shell Command Language in XCU Shell Command Language, utilities may behave differently from those described in POSIX.1-2017.
+-- #!/bin/bash -> in the start of the file tell which type of interpretur we are going to use
+-- chmod u+x filename.sh -> set premissions for executing, current user can do this
+-- ./filename.sh -> this command will execute the file
+
+################# variables ##################################
+
+-- SOME_VARIABLE_NAME=test/src/assets -> the way how to declare the variable
+-- echo $SOME_VARIABLE_NAME -> the way how to call it
+
+################# positional arguments ##################################
+echo Hell World -> argument in that order in which they were set. Separeted by one space.
+  0    1    2
+  Start from the position 1, 0 reserved for the shell
+-- echo Hello $1 $2 -> ./filename Mike Son -> Hello Mike Son
+
+
+################# piping ##################################
+
+-- ls -l /usr/bin | grep bash -> allows find files with needed info, like bash in this case. Also this is a pipe symbol -> |
+
+-- > - symbol to write to a file, example - echo Hell World > text.txt - overwrite already exist info
+-- >> - symbol to append to a file, example - echo Hell World >> text.txt -
+-- cat << EOF -> can return text that we inputed EOF some text EOF -> some text
+-- wc -w <<< "Hello work" -> output the number of words between doublequotes 
+
+################# test operators ##################################
+
+-- $? -> return the result of the last command or code
+-- [ hello = hello ] -> return 0 exit code without any issues or like true, and 1 if false or a problem
+-- [ 1 -eq 1 ] -> for comparing numbers
