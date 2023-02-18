@@ -27,6 +27,7 @@ Basic commands
 -- echo $SOME_VARIABLE_NAME -> the way how to call it
 
 ################# positional arguments ##################################
+
 echo Hell World -> argument in that order in which they were set. Separeted by one space.
   0    1    2
   Start from the position 1, 0 reserved for the shell
@@ -47,3 +48,51 @@ echo Hell World -> argument in that order in which they were set. Separeted by o
 -- $? -> return the result of the last command or code
 -- [ hello = hello ] -> return 0 exit code without any issues or like true, and 1 if false or a problem
 -- [ 1 -eq 1 ] -> for comparing numbers
+
+################# if | elif | else ##################################
+
+an example 
+
+#!/bin/bash
+if[ ${1,,} = boss ]; then
+      echo "Hello boss"
+elif [ ${1,,} = help ]; then 
+      echo "You have to put your name"
+else 
+      echo "Stop typing"
+fi
+
+where ${1,,} -> the first argument which compare without the register
+
+run the code -> ./fileName boss
+return "Hello boss"
+
+################# case statemants ##################################
+
+#!/bin/bash
+
+case ${1,,} in 
+      admin | user)
+        echo "Hello user or admin"
+        ;;
+      help)
+        echo "Just put your name"
+        ;;
+      *)
+      echo "Close the laptop"
+  esac
+
+  where the esac -> the end of the case, and ;; -> end of single case
+
+################# arrays ##################################
+
+TEST_VAR=(1 2 4) -> where the space is a separator
+echo $TEST_VAR -> output the first item from an array
+echo ${TEST_VAR[@]} -> output all items from an array
+echo ${TEST_VAR[0]} -> output item by index from an array
+
+################# for loop ##################################
+
+TEST_WORDS=(table chair box)
+
+for item in ${TEST_WORDS[@]}; do echo -n $item | wc -c; done -> this loop will check every item and return the length of the word
