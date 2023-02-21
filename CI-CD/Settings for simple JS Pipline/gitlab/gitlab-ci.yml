@@ -1,0 +1,117 @@
+stages: # the name of our stage, we can create several stages -> lint, pre-lint, deploy etc.
+  - lint
+
+eslint: # the name of our job
+# this part of code has been taken from Chat GPT
+   trigger:
+    project: <project_path>
+    branch: <branch>
+    token: <token>
+# this part of code has been taken from Chat GPT
+  stage: lint # connect with our stage
+  variables: # set the enviroment variables
+    NODE_VERSION: 14.17.0 # set the node node version 
+  scripts: #like steps in github. in gitlab we don't need to use checkout, because it already exists from the box
+    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install/sh | bash
+    - export NVM_DIR="$HOME/." && . "$NVM_DIR/nvm.sh" --no-use
+    - eval "[ -f .nvmrc ] && nvm install"
+    - npm install
+    - npm run lint
+
+
+    prettier: # the name of our job other
+# this part of code has been taken from Chat GPT
+   trigger:
+    project: <project_path>
+    branch: <branch>
+    token: <token>
+# this part of code has been taken from Chat GPT
+  stage: lint # connect with our stage
+  variables: # set the enviroment variables
+    NODE_VERSION: 14.17.0 # set the node node version 
+  scripts: #like steps in github. in gitlab we don't need to use checkout, because it already exists from the box
+    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install/sh | bash
+    - export NVM_DIR="$HOME/." && . "$NVM_DIR/nvm.sh" --no-use
+    - eval "[ -f .nvmrc ] && nvm install"
+    - npm install
+    - npm run check:format # the name of script which run our prettier
+
+
+###################################  refactoring useing docker image   ##########################################################
+
+
+stages: # the name of our stage, we can create several stages -> lint, pre-lint, deploy etc.
+  - lint
+
+eslint: # the name of our job
+  image: node:14.17.0-alpine # installing docker image with current version of node 
+# this part of code has been taken from Chat GPT
+   trigger:
+    project: <project_path>
+    branch: <branch>
+    token: <token>
+# this part of code has been taken from Chat GPT
+  stage: lint # connect with our stage 
+  scripts: #like steps in github. in gitlab we don't need to use checkout, because it already exists from the box
+    - npm install
+    - npm run lint
+
+
+    prettier: # the name of our job other
+  image: node:14.17.0-alpine # installing docker image with current version of node 
+# this part of code has been taken from Chat GPT
+   trigger:
+    project: <project_path>
+    branch: <branch>
+    token: <token>
+# this part of code has been taken from Chat GPT
+  stage: lint # connect with our stage
+  scripts: #like steps in github. in gitlab we don't need to use checkout, because it already exists from the box
+    - npm install
+    - npm run check:format # the name of script which run our prettier
+ 
+
+
+ ######################################## caching ##########################
+#  cache can be saved local, on server or on cloudy platforms
+
+
+ stages: # the name of our stage, we can create several stages -> lint, pre-lint, deploy etc.
+  - lint
+
+  cach:                     # caching repeated info      
+    key:
+      files:
+        - package-lock.json # use the name of this file like a key for caching info
+      paths:
+       - ./npm
+
+before_script: 
+    - npm ci --cache .npm --prefer-offline
+
+eslint: # the name of our job
+  image: node:14.17.0-alpine # installing docker image with current version of node 
+# this part of code has been taken from Chat GPT
+   trigger:
+    project: <project_path>
+    branch: <branch>
+    token: <token>
+# this part of code has been taken from Chat GPT
+  stage: lint # connect with our stage 
+  scripts: #like steps in github. in gitlab we don't need to use checkout, because it already exists from the box
+    - npm install
+    - npm run lint
+
+
+    prettier: # the name of our job other
+  image: node:14.17.0-alpine # installing docker image with current version of node 
+# this part of code has been taken from Chat GPT
+   trigger:
+    project: <project_path>
+    branch: <branch>
+    token: <token>
+# this part of code has been taken from Chat GPT
+  stage: lint # connect with our stage
+  scripts: #like steps in github. in gitlab we don't need to use checkout, because it already exists from the box
+    - npm install
+    - npm run check:format # the name of script which run our prettier
