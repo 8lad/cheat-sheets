@@ -1,0 +1,29 @@
+Подключиться к удаленному серверу через ssh
+apt update ->  после apt upgrade -> для того чтобы у нас были последние версии со всеми патчами, и это хорошо для секьюрности
+Перед началом работы нужно уточнить, есть ли уже настройки на сервере
+Далее создаем ssh ключ, который будет использоваться для доступа к серверу ->
+ssh keygen -f ~/.ssh/ci-key -t ecdsa -b 521  -C 'example-email@gogle.com'
+-f место где будем хранить
+-t тип ключа
+-b длинна ключа в байтах
+-C почта 
+passphrase - можно создавать а можно и не создавать - используется для ограничения доступа к закрытому ключу
+Далее заходим на сервер и создаем нового пользователя ->
+useradd -s bin/bash -m -d /home/deploy -c "deploy" deploy
+-s устанавливаем домашний shell
+-m -d домашняя директория
+-c имя 
+paswd deploy -> создаем пароль для пользователя
+exit -> если нужно выйти из режима создания пользователя и тд
+Далее нужно скопировать ключ ssh
+ssh-copy-id -i ~/.ssh/ci-key.pub deploy@172.104.151.230 -> deploy@172.104.151.230 это имя пользователя и адрес сервера
+whoami -> проверить под каким ником я зашел
+Далее устанавливаем node
+curl -fsSl https://deb.nodesource.com/setup_14.x | bash -
+apt install nodejs
+apt install nginx
+npm install -g pm2
+pm2 startup -> pm2 устанавливаем в список для автозапуска
+env PATH=$PATH:/user/bin pm2 startup systemd -u deploy --hp /home/deploy -> от имени пользователя deploy создаем директорию
+Далее настройка firewall и портов. 
+Про порт 80 можно почитать здесь - http://dobri-porady.pp.ua/8371-scho-take-port-80-z-chim-yogo-yidyat.html

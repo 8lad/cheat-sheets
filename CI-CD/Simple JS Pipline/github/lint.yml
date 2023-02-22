@@ -54,6 +54,7 @@ on: # the trigger of some action
 
   jobs:       # describing current job
     eslint:   # the name of the job
+      runs-on: ubuntu-latest          # set the enviroment where this job will work, and the name of the docker image
       container: 
         image: node:14.17.0-alpine         # set the docker image
         steps:            # describing steps
@@ -64,10 +65,62 @@ on: # the trigger of some action
             run: npm run lint
    
     prettier:   # the name of the job
+      runs-on: ubuntu-latest          # set the enviroment where this job will work, and the name of the docker image
       container: 
         image: node:14.17.0-alpine         # set the docker image
         steps:            # describing steps
           - uses: actions/checkout@2  # here we show that we will use github action which checkout our repository
+          - name: Install dependencies
+            run: npm install
+          - name: Lint source code with ESLint
+            run: npm run check:format
+
+
+
+  ####################################### cache #######################
+
+    name: lint # set the name of the job
+
+on: # the trigger of some action
+  push:   # the name of the trigger
+    branches: [main] # target branch - if skip this property job will work on every branch when push will start
+  pull_request:  # one more trigger
+    branches: [main] # target branch. Can set several branches in this array
+
+  jobs:       # describing current job
+    eslint:   # the name of the job
+      runs-on: ubuntu-latest          # set the enviroment where this job will work, and the name of the docker image
+      container: 
+        image: node:14.17.0-alpine         # set the docker image
+        steps:            # describing steps
+          - uses: actions/checkout@2  # here we show that we will use github action which checkout our repository
+          - name: Cache node.js modules
+            uses: actions/cache@v2
+            env:
+                cache-name: npm-${{ hashFiles('package-lock.json')}}
+            with:
+              path: .npm
+              key: ${{ env.cache-name }} # the key for saving cache
+              restore-key: ${{ env.cache-name}}
+          - name: Install dependencies
+            run: npm install
+          - name: Lint source code with ESLint
+            run: npm run lint
+   
+    prettier:   # the name of the job
+      runs-on: ubuntu-latest          # set the enviroment where this job will work, and the name of the docker image
+      container: 
+        image: node:14.17.0-alpine         # set the docker image
+        steps:            # describing steps
+          - uses: actions/checkout@2  # here we show that we will use github action which checkout our repository
+          - name: Cache node.js modules
+            uses: actions/cache@v2
+            env:
+                cache-name: npm-${{ hashFiles('package-lock.json')}}
+            with:
+              path: .npm
+              key: ${{ env.cache-name }} # the key for saving cache
+              restore-key: ${{ env.cache-name}}
           - name: Install dependencies
             run: npm install
           - name: Lint source code with ESLint

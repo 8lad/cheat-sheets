@@ -1,6 +1,8 @@
 Basic commands
 -- clear -> clear the console
 -- rm -> remove file or directory -> rm text.txt
+-- whoami -> check current user name
+-- mkdir directoryName -> create new directory
 -- echo -> allows to show text entered as an argument - echo Hello -> Hello
 -- read -> allows to read user input info, and write it to the variable
 -- cat fileName.txt -> print the text in the bash
