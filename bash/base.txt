@@ -125,3 +125,63 @@ showuptime  //  the place where we call the function inside the document
 // local up = $(uptime -p | cut -c4- )
 // if we need use an argument, write something like this $1
 // then call the function doSomething FirstArgument -> will output FirstArgument
+
+##################### exit code #################
+
+This is a number returned in a script, that can be used to differentiate between execution states 
+The example -> file -> funcWithArg.sh
+
+#!/bin/bash
+
+showname() {
+  echo hello $1
+  if [${1,,} = mike ]; then 
+    return 0
+  else 
+    return 1
+  fi
+}
+
+showname $1 
+
+if [ $? = 1]; then
+    echo "Someone wants to start the funstion"
+fi
+
+//////////////////////
+call the function -> ./funcWithArg.sh mike
+hello mike
+call the function -> ./funcWithArg.sh tom
+hello tom
+Someone wants to start the funstion
+
+
+##################### AWK #######################
+It helps filtring file contents and output of the command. Can work with text. 
+# extra info - https://habr.com/ru/company/ruvds/blog/665084/
+# awk uses space as a separator
+
+echo one two three four > textAWK.txt  -> create and add some text in the file
+
+awk '{print $1}' textAWK.txt -> will output -> one
+
+vim csvtest.csv -> create file csv type
+
+one,two,three -> the content of the file
+
+awk -F, '{print $1}' csvtest.csv -> where -F we show the type of separator ',' comma 
+the output -> 'one'
+
+
+Another example ->
+
+echo "Just say hello" | awk '{print $1}' -> will output 'Just'
+
+
+############### SED #########################
+# This is a command line tool which allows you modify values in the text files using regEx
+
+vim sedtest.txt -> created file whith the text about fly. And we want to replace 'fly' word
+
+sed 's/fly/grasshopper/g' sedtest.txt -> we will replace fly to grasshopper
+

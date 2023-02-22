@@ -25,5 +25,44 @@ apt install nginx
 npm install -g pm2
 pm2 startup -> pm2 устанавливаем в список для автозапуска
 env PATH=$PATH:/user/bin pm2 startup systemd -u deploy --hp /home/deploy -> от имени пользователя deploy создаем директорию
-Далее настройка firewall и портов. 
+Далее настройка firewall и портов. Разрешить соединение по 80 и 443 порту.
 Про порт 80 можно почитать здесь - http://dobri-porady.pp.ua/8371-scho-take-port-80-z-chim-yogo-yidyat.html
+ufw allow 'Nginx Full' - доступ к портам
+ufw allow 'OpenSSH' - доступ по ssh
+ufw enable - включаем firewall
+apt install postgresql postgresql-contrib - устанавливаем БД
+psql -> заходим в настройки постргес
+postgres=# CREATE USER realworld WITH ENCRYPTED PASSWORD 'someStrongPassword' - создали пользователя с паролем
+postgres=# GRANT ALL PRIVILEGES ON DATABASE realworld to realworld - выдаем доступы и возможности 
+postgres=# \q - выходим из постгрес
+Далее настраиваем nginx
+vim /etc/nginx/sites-avaliable/realworld.conf
+Настройки внутри документа
+upstream {
+    server: 127.0.0.1:3000;
+    keepalive: 64
+}
+
+server {
+    listen 80 default_server;  # ipV4
+    listen [::]:80 default_server; # ipV6
+    server_name app.172.104.151.230.nip.io; # указываем ip сервера и сервис который помогает с именами серверов nip.io
+    index index.html; # указываем корневой файл
+    root home/deploy/realworld; # указываем корневую директорию
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $http_host;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        proxy_pass http://upaream/;
+        proxy_redirect off;
+        proxy_read_timeout 240s;
+
+    }
+
+}
