@@ -72,12 +72,13 @@ eslint: # the name of our job
  
 
 
- ######################################## caching ##########################
+######################################## caching ##########################
 #  cache can be saved local, on server or on cloudy platforms
 
 
  stages: # the name of our stage, we can create several stages -> lint, pre-lint, deploy etc.
   - lint
+  - deploy
 
   cach:                     # caching repeated info      
     key:
@@ -85,11 +86,13 @@ eslint: # the name of our job
         - package-lock.json # use the name of this file like a key for caching info
       paths:
        - ./npm
-
+.default-cache: &default-cache
 before_script: 
     - npm ci --cache .npm --prefer-offline
 
 eslint: # the name of our job
+extends: 
+    .default-cache
   image: node:14.17.0-alpine # installing docker image with current version of node 
 # this part of code has been taken from Chat GPT
    trigger:
@@ -103,7 +106,9 @@ eslint: # the name of our job
     - npm run lint
 
 
-    prettier: # the name of our job other
+prettier: # the name of our job other
+extends: 
+    .default-cache
   image: node:14.17.0-alpine # installing docker image with current version of node 
 # this part of code has been taken from Chat GPT
    trigger:
@@ -115,3 +120,33 @@ eslint: # the name of our job
   scripts: #like steps in github. in gitlab we don't need to use checkout, because it already exists from the box
     - npm install
     - npm run check:format # the name of script which run our prettier
+
+  # Adding deploy stage settings
+
+  image:  node:14.17.0-alpine
+# image: ubuntu:latest   -если используем линукс тогда такая команда
+  stage: deploy
+  script:
+  # - apt -qq update && apt upgrade -qqy openssh-client  -если используем линукс, тогда такая команда, там уже предустановлен клиент
+    - apk update && apk add openssh-client # устанавливаем клиента
+    - eval $(ssh-agent -s) # проверяем, запускаем и получаем переменную для нашего ssh агента 
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - # берем ключ, удаляем у него переводы строк и добавляем в наш агент чтобы он был доступен
+    - mkdir -p ~/.ssh # создаем директорию
+    - chmod 700 ~/.ssh # указываем безопасные права доступа
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    # В этом месте не используем команду, меняем scp на rsync
+    # - scp -r $PWD deploy@172.104.151.230:~/realworld      # scp - команда для копирования на удаленный сервер, в этой строке копируется весь проект, что в реальной жизни маловероятно. Нужно настраивать какие именно папки и файлы куда будут копироваться
+    # В этом месте не используем команду, меняем scp на rsync - это программа для UNIX-подобных систем, которая эффективно выполняет синхронизацию файлов и каталогов в двух местах (необязательно локальных) с минимизированием трафика, используя кодирование данных при необходимости
+
+    - rsync -a --progress --human-readable --delete
+      --exclude-from '.gitignore'
+      --exclude .gitignore
+      --exclude .git 
+     .deploy@172.104.151.230:~/realworld/
+      ssh deploy@172.104.151.230 "pushd ~/realworld && npm install && pm2 restart realworld && popd" --production
+
+      !!!!!!!! Build может падать если указаны переменные указаны как protected а ветка нет. Выбранную ветку тоже указывать как protected
+Настройки:
+Allowed to merge: Maintainers
+Allowed to push: Developers + Maintainers
+После этого перезапустить Pipline

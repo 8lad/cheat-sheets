@@ -22,7 +22,7 @@ whoami -> проверить под каким ником я зашел
 curl -fsSl https://deb.nodesource.com/setup_14.x | bash -
 apt install nodejs
 apt install nginx
-npm install -g pm2
+npm install -g pm2 устанавливаем процесс менеджер https://habr.com/ru/post/480670/ - ### PM2 is a production process manager for Node.js applications with a built-in load balancer. It allows you to keep applications alive forever, to reload them without downtime and to facilitate common system admin tasks. ###
 pm2 startup -> pm2 устанавливаем в список для автозапуска
 env PATH=$PATH:/user/bin pm2 startup systemd -u deploy --hp /home/deploy -> от имени пользователя deploy создаем директорию
 Далее настройка firewall и портов. Разрешить соединение по 80 и 443 порту.
@@ -38,14 +38,14 @@ postgres=# \q - выходим из постгрес
 Далее настраиваем nginx
 vim /etc/nginx/sites-avaliable/realworld.conf
 Настройки внутри документа
-upstream {
+upstream backend {                  # backend - имя
     server: 127.0.0.1:3000;
     keepalive: 64
 }
 
 server {
     listen 80 default_server;  # ipV4
-    listen [::]:80 default_server; # ipV6
+    listen [::]:80 default_server; # ipV6 можно включать, можно не включать
     server_name app.172.104.151.230.nip.io; # указываем ip сервера и сервис который помогает с именами серверов nip.io
     index index.html; # указываем корневой файл
     root home/deploy/realworld; # указываем корневую директорию
@@ -59,10 +59,39 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
 
-        proxy_pass http://upaream/;
+        proxy_pass http://backend/;
         proxy_redirect off;
         proxy_read_timeout 240s;
 
     }
 
 }
+
+Далее нужно настроить pm2 но перед этим нужно переключиться на пользователя
+Создаем конфиг
+vim ecosystem.config.js
+
+module.exports = {
+    apps: [{
+            name: "realworld",
+            script: 'lib/server.js',
+        "env_production": {
+            "NODE_ENV": "production",
+            "DB_NAME": "realworld",
+            "DB_USER": "realworld",
+            "DB_PASSWORD": "realworld",
+            "SECRET":  "realworld"
+            }
+        }],
+};
+
+Далее указываем ssh ключ который будем использовать для деплоя
+cat ~/.ssh/ci-key | xsel -ib
+
+Далее заходим в настойки CI-CD gitlab и указываем новую переменную
+SSH_PRIVATE_KEY -> и устанавливаем ее значение
+Далее создаем еще одну переменную для этого ключа
+SSH_KNOWN_HOSTS
+~/.ssh/known_hosts -> отсюда берем его значение
+Ключи добавлялись для удобства деплоя на сервер. С их помощью будет происходить этот процесс
+Далее нужно перейти в файлы jobs чтобы сконфигурировать деплой на сервер
