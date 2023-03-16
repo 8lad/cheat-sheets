@@ -1,0 +1,11 @@
+If you need to send multi line request in job, use this style
+
+- echo "[LOG] Send request for deploying project on zeus server"
+
+     curl
+      -X POST
+      -H "Content-Type:application/json"
+      -d "{\"app\":\"$PROJECT_NAME\",\"targetDir\":\"$PROJECT_TARGET_DIR\"}"
+      http://some-url/deploy
+
+    - echo "[LOG] The request has been sent"
