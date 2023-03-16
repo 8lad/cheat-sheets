@@ -1,0 +1,39 @@
+The article about rythm in web - https://codingshower.com/horizontal-and-vertical-rhythm-in-web-typography-as-css-devs/
+Important things - line height, margins, paddings.
+
+Using the base line grid approach - https://www.youtube.com/watch?v=rGq1GllRLjk
+The main idea of this approack is putting your text in the grid correctly. Each row should be on her correct place.
+You can rich it by playing font size and line height.
+When scale content - you should be sure, that everything is based on your grid.
+
+Principles useful grid - https://www.youtube.com/watch?v=9QRIjnMEXw8
+Grids help align things vertical or horizontal
+Grig helps things look and read better.
+It's not just gtid cells, it also can be gaps between components.
+
+Use repetition for consistancy. 
+Brain loves patterns - symetry and ballance
+Repetition sets the rules
+
+The concept: 
+- Our textual content sits on the grid lines (baselines) and
+- We take the space between two baselines (also known as leading) and use that amount or a multiple of that amount everywhere else in our layout in terms of margins, paddings, heights, etc.
+
+About line height:
+ For good designs, it is recommend to use somewhere between 125-150% (sometimes even 170-200%) of the font size as line heights. Oh and these line heights you set, should be a multiple of the baseline grid size 
+
+List helps to manage your rythm:
+    line-height
+    height (even min-height, max-height)
+    margin-top, margin-bottom (or margin)
+    padding-top, padding-bottom (or padding)
+    top, bottom (or inset)
+
+Good base value for rythm is 8px
+
+horizontal rhythm:
+
+- Letter Spacing
+- Kerning 
+- Text Justification – Ideally one shouldn’t. If must then use hyphenation.
+Horizontal rhythm takes care of the content’s legibility (clear enough to read). That’s all we need to know for now!

@@ -1,0 +1,21 @@
+Main article - https://css-tricks.com/magic-numbers-in-css/
+
+Wikipedia sourse - https://en.wikipedia.org/wiki/Magic_number_(programming)#Unnamed_numerical_constants
+additional article about css code - https://csswizardry.com/2012/11/code-smells-in-css/
+css tricks - https://css-tricks.com/fighting-the-space-between-inline-block-elements/
+wordperss recomendation - https://developer.wordpress.org/coding-standards/wordpress-coding-standards/css/#best-practices
+
+In CSS, "magic numbers" typically refer to hardcoded numeric values that are used without context or explanation.
+
+Avoiding magic numbers (info from chat GPT):
+    Use descriptive variable names: Instead of using arbitrary numbers, use variable names that are descriptive and meaningful. For example, use $primary-color instead of #0077ff.
+
+    Use relative units: Use relative units like em, rem, %, vh, vw instead of absolute units like px or pt. This will make your layout more flexible and responsive to different screen sizes.
+
+    Use constants: Define constants for commonly used values in your CSS. This can help make your code more readable and consistent. For example, you could define a constant like $default-padding: 1rem; and use it throughout your code.
+
+    Use pre-defined sizes and scales: Use pre-defined sizes and scales for things like font sizes, line-heights, and spacing. For example, you could use a typography scale like the "modular scale" to ensure consistent font sizes throughout your design.
+
+    Comment your code: If you must use hardcoded values, add comments to explain their purpose and context. This can help other developers understand the intent of your code and make modifications more easily in the future.
+
+    Use CSS frameworks: Consider using CSS frameworks like Bootstrap or Foundation, which provide pre-defined classes and styles for common UI elements. This can help you avoid writing custom CSS for every element and reduce the chances of using magic numbers.
