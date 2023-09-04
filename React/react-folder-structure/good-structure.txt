@@ -1,0 +1,47 @@
+my-app/
+  public/
+    favicon.ico
+    index.html
+  src/
+    api/
+      SomeApi/
+        SomeApi.models.ts - contains interfaces enums types 
+        SomeApi.ts - for example api with axios, also can be a class using the facade pattern
+    assets/
+      icons/
+      images/
+      styles/
+    components/
+      SomeButton/
+        SomeButton.model.ts
+        SomeButton.utils.ts
+        SomeButton.tsx
+    helpers/
+      someHelper.ts
+    pages/
+      MainPage/
+        MainPage.models.ts - contains interfaces enums types 
+        MainPage.tsx
+    router/
+      Router.tsx - contains all routers
+    slices/
+      someMainSlice.ts
+    store/
+      store.ts
+    utils/
+      constants.ts
+    App.tsx
+    globalTypes.ts
+    index.css
+    main.tsx
+    vite-env.d.ts
+  .env
+  .eslintignore
+  .gitignore
+  .prettierignore
+  .prettierrc
+  package.json
+  package-lock.json
+  tsconfig.json
+  tsconfig.node.json
+  vite.config.tsconfig

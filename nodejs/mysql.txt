@@ -1,0 +1,32 @@
+const mysql = require('mysql');
+
+// configuration connection
+
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  database: "users",
+  password: "1111"
+});
+
+// get the data from database
+
+connection.connect((error) => {
+  if (error) {
+    console.log(error);
+    return error;
+  } else {
+    console.log('Database works correctly');
+  }
+});
+
+const query = 'SELECT * FROM users';
+
+connection.query(query, (error, result, field) => {
+  console.log(error);
+  console.log(result);
+  console.log(field);
+});
+
+// the field is an additional info about each cell of the database (like names of database, the table name and etc)
+// field - also is unneccessary param

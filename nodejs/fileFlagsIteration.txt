@@ -1,0 +1,25 @@
+'r': Read mode. Opens the file for reading. An error will be thrown if the file doesn't exist.
+
+'r+': Read and write mode. Opens the file for both reading and writing. An error will be thrown if the file doesn't exist.
+
+'rs': Read mode with synchronous read. This is similar to 'r', but it bypasses the local file system cache, which might be useful for certain types of applications.
+
+'rs+': Read and write mode with synchronous read. Similar to 'r+', but bypasses the local file system cache.
+
+'w': Write mode. Opens the file for writing. Creates the file if it doesn't exist or truncates it if it does.
+
+'wx': Exclusive write mode. Opens the file for writing only if it doesn't exist. If the file already exists, an error will be thrown.
+
+'w+': Read and write mode. Opens the file for both reading and writing. Creates the file if it doesn't exist or truncates it if it does.
+
+'wx+': Exclusive read and write mode. Opens the file for both reading and writing only if it doesn't exist. If the file already exists, an error will be thrown.
+
+'a': Append mode. Opens the file for writing. Creates the file if it doesn't exist.
+
+'ax': Exclusive append mode. Opens the file for writing only if it doesn't exist. If the file already exists, an error will be thrown.
+
+'a+': Read and append mode. Opens the file for both reading and writing. Creates the file if it doesn't exist.
+
+'ax+': Exclusive read and append mode. Opens the file for both reading and writing only if it doesn't exist. If the file already exists, an error will be thrown.
+
+ const data = fs.readFileSync(filePath, {encoding: 'utf8', flag: 'r'});

@@ -1,0 +1,43 @@
+example of testing using vitest 
+!!!!!!!!!!! really important thing - use jsx or tsx for testing file extention
+something like that - App.test.tsx | App.test.jsx
+
+import React from 'react';
+import { render } from '@testing-library/react';
+import { axe } from 'vitest-axe';
+
+describe('something', () => {
+  it('should be in the document', () => {
+    const { container } = render(
+    <h1>Hello<h1/>,
+    );
+
+    expect(container).toBeInTheDocument();
+  });
+
+  it('should not have accessibility violations', async () => {
+    const { container } = render(
+      <h1>Hello<h1/>,
+    );
+
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('should have correct aria-label attribute value', () => {
+    const { container } = render(
+       <h1>Hello<h1/>,
+    );
+
+    const breadcrumbsContainer = container.querySelector(`.${CONTAINER_CLASS}`);
+    expect(breadcrumbsContainer).toHaveAttribute('aria-label', 'Test label');
+  });
+
+  it('should have additional test class', () => {
+    const { container } = render(
+        <h1>Hello<h1/>,
+    );
+
+    const breadcrumbsContainer = container.querySelector(`.${CONTAINER_CLASS}`);
+    expect(breadcrumbsContainer).toHaveClass(TEST_CLASS);
+  });
+});

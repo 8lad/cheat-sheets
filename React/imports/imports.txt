@@ -1,0 +1,6 @@
+- libraries;
+- components;
+- utils;
+- types;
+- images;
+- styles; 

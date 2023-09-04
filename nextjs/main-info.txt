@@ -1,0 +1,19 @@
+- Routing - file based route system
+- About api - the better way to use external api instead of the nextjs api
+- Nextjs has code splitting - smaller bundles for the better performance, use them only when needed (like lazy and suspense in React)
+- By default all components inside the app folder are SSR components
+- 'use client' - shows that you use client side component, everything inside this component (as other children components) will be like 
+  a CSR components. The "use client" directive must be defined at the top of a file before any imports
+- Better case to use CSR components - everything with iteractivity, hooks(state, reducer, effect, custom), browser-only API 
+- The CSR should be as possible on the lowest level in the DOM
+- You cannot import a Server Component into a Client Component
+- Recommended Pattern: Passing Server Components to Client Components as Props
+- .env variables without prefix NEXT_PUBLIC won't execute on the client. To preventing of leaking secure info. It'll execute only on 
+  the server
+- If need to work with some thid part libraries or with context, you should wrapp the provider for example, in the client component, 
+  and put inside it your components as children. Insetad will get an error (https://nextjs.org/docs/getting-started/react-essentials#rendering-third-party-context-providers-in-server-components)
+- If need to united UI inside some route, just need to create layout.js(ts) file inside the route folder. For example we have folder
+  with the name posts > new(folder) + [postId](folder) + page.js. So we can create the layout for them.
+- Error components must be client components!!!!!!
+- The structure of the page folder -> page.js + loading.js + layout.js + error.js
+- For the seo we have static and dynamic metadata

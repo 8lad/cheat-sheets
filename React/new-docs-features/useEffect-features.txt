@@ -1,0 +1,39 @@
+Cases when you don't need useEffect:
+ - You don’t need Effects to transform data for rendering
+ (To avoid the unnecessary render passes, transform all the data at the top level of your components. That code will automatically re-run whenever your props or state change.)
+ - You don’t need Effects to handle user events
+
+Cases when need to use: 
+  - You do need Effects to synchronize with external systems. (Fetching data)
+
+When something can be calculated from the existing props or state, don’t put it in state. Instead, calculate it during rendering.
+
+If have expensive calculations - you can wrap it by useMemo
+
+const visibleTodos = useMemo(()=> {
+  // do something
+  return getFilteredTodos(todos, filter);
+}, [todos, filter]);
+
+If need to update some info, for example relative info, like the user comments, can use a key
+
+export default function ProfilePage({ userId }) {
+  return (
+    <Profile
+      userId={userId}
+      key={userId}
+    />
+  );
+}
+
+function Profile({ userId }) {
+  // ✅ This and any other state below will reset on key change automatically
+  const [comment, setComment] = useState('');
+  // ...
+}
+
+When the key changes - React recreates the DOM and resets the state
+
+The best practice - is to calculate during the render.
+
+When you’re not sure whether some code should be in an Effect or in an event handler, ask yourself why this code needs to run. Use Effects only for code that should run because the component was displayed to the user

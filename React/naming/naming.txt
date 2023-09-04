@@ -1,0 +1,3 @@
+PascalCase - Components, Types
+camelCase - variables, hooks, functions, arrays
+UPPER_CASE - constants
