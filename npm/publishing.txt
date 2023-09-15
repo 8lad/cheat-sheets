@@ -1,0 +1,27 @@
+First of all need to login or check is you're login in your npm accounts
+
+Publishing from the build of your package folder (where is your package.json file)
+
+For publishing should use command - 
+# npm publish
+If you'll have an error when publish - 
+# npm ERR! code EPUBLISHCONFLICT
+# npm ERR! publish fail Cannot publish over existing version.
+
+Just try to publish without package name 
+# npm publish <package name>
+but just 
+# npm publish
+
+If you need to see logs about events in your package
+# npm view --json
+
+Important
+Update and describe the version in the CHANGELOG file if exists
+And don't forget to update the version inside the package.json file
+
+You can have several .npmrc (npm run control)
+The priority order is:
+First - specific package .npmrc
+Second - user .npmrc
+Third - global .npmrc

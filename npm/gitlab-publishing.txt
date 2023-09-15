@@ -1,0 +1,20 @@
+Describing the .npmrc file
+
+
+registry=https://registry.npmjs.org/
+@bbc:registry=https://gitlab.nbbc.co/api/v4/projects/8922/packages/npm/
+//gitlab.nbbc.co/api/v4/projects/8922/packages/npm/:_authToken=<token>
+
+-  registry=https://registry.npmjs.org/
+   This line specifies the default npm registry, which is the public npm registry where most npm packages are hosted.
+
+-  @bbc:registry=https://gitlab.nbbc.co/api/v4/projects/8922/packages/npm/
+   This line defines a scoped registry for packages with the scope @bbc. It tells npm that for packages with this scope, it should use the specified GitLab registry URL as the source.
+
+- //gitlab.nbbc.co/api/v4/projects/8922/packages/npm/:_authToken=<token>
+  This line includes the authentication token (<token>) for accessing the GitLab package registry. It's necessary to authenticate and authorize your npm client to publish and retrieve packages from your GitLab project's package registry.
+
+  !!!! Important info
+
+  If you change the location form some other storage from your package, really important update the 
+  url in the package-lock.json
