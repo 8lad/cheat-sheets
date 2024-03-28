@@ -1,0 +1,9 @@
+//  for adaptive font, also can use for line-height
+@mixin adaptive-font($pcSize, $mobSize) {
+	$addSize: $pcSize - $mobSize;
+	$maxWidth: $container-max-width - $min-screen-size;
+	font-size: calc(
+		#{$mobSize + px} + #{$addSize} *
+			((100vw - #{$min-screen-size}) / #{$maxWidth})
+	);
+}

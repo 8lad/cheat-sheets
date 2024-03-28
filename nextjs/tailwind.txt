@@ -1,0 +1,11 @@
+When created the main component which will wrapp the page elements (for example main with it's classes),
+Inside the page you have to use React Fragment for wrapping (<></>)
+Something like this
+
+<>
+  <MainWrapper>
+    <h1>Other content here</h1>
+    </MainWrapper>
+</>
+
+Because in other case not all your classes will work
