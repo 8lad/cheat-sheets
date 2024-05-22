@@ -64,7 +64,9 @@ package.json file config:
 
 ###########################################
 
-eslint.config.js file config:
+eslint.config.js file config, also need change the file extension,
+because when use without 'type':'modules' will get an error, solution is - .mjs:
+
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
