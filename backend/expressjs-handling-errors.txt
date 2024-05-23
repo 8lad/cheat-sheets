@@ -1,0 +1,86 @@
+The error instance:
+
+export class CustomError extends Error {
+  statusCode?: number;
+  status: string;
+  constructor(message: string, statusCode?: number) {
+    super(message);
+    this.statusCode = statusCode;
+    this.status = 'error';
+  }
+}
+
+**********************************************************************
+
+The error handler middleware:
+
+import { Request, Response, NextFunction } from 'express';
+import { CustomError } from '../utils/errorInstance';
+
+export const customErrorHandler = (
+  error: CustomError,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const errorResponseObject = {
+    message: error.message,
+    status: error.status || 'error',
+  };
+  res.status(error.statusCode || 500).json(errorResponseObject);
+  next();
+};
+
+Usage:
+
+app.use(customErrorHandler);
+
+************************************************************************
+
+Error handling:
+
+
+const createUser = async (
+  req: CustomRequest<Omit<UserRequestBody, 'isDeleted'>>,
+  res: Response,
+  next: NextFunction,
+) => {
+
+## If use outside 'try catch' then you need just set the error in the next function 
+## if(conditions) {
+##    next(new CustomError('Error message', 404));
+##  }
+
+  try {
+    const { name, email, password } = req.body;
+
+    const existingUser = await UserRepository.getExistingUser(email);
+
+    if (existingUser && existingUser.isDeleted) {
+      throw new CustomError('This account was deleted', 403);
+      ## Inside 'try catch' it's ok to throw the error
+    }
+
+    if (existingUser) {
+      throw new CustomError('User already exists', 403);
+    }
+
+    bcrypt.hash(password, SALT, async (error, hash) => {
+      if (!error || !hash) {
+## Inside nested functions is important to set the error in the next function and then write return.
+        next(new CustomError('Hashing password issue', 500));
+        return;
+      }
+
+      const newUserData = { name, email, password: hash };
+      const newUser = await UserRepository.createUser(newUserData);
+      if (!newUser) {
+        next(new CustomError("Internal server error. Can't create new user", 500));
+        return;
+      }
+      res.status(201).json(getSuccessResponseObject('User created'));
+    });
+  } catch (error) {
+    next(error);
+  }
+};
