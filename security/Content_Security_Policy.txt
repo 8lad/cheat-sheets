@@ -1,0 +1,43 @@
+# Main concepts
+
+The XSS attacks can be provide by user by input data,
+for example in input send some script, it will be stored on a database and then appears on a 
+website. For example set some data in comments
+
+The path from where you're get files (css, js, images)
+
+Implementing CSP
+Example, set in headers in HTTP response:
+Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:
+
+examples for resources
+
+default-src 'self'
+connect-src 'self' some url separated by single space;
+font-src 'self' data: url;
+frame-src / child-src 'self' url;
+img-src 'self' data: https;
+object-src 'none';
+script-src 'self' url;
+style-src 'self' 'unsafe-inline';
+base-url 'self';
+media-src *
+
+Also can create some reports about atacks atepmpts
+report-uri <url where will be saved reports>;
+
+
+Set all these data in headers 
+  app.use((req, res, next)=>{
+    res.setHeader("content-security-policy-report-only", "default-src 'self'; script-src 'selr' ........")
+  })
+
+If urgently needed to add inline scripts can hashing it. The example:
+ Content-Security-Policy: script-src 'self' 'unsafe-eval' 'sha256-6UcmjVDygSSU8p+3s7E7Kz8EG/ARhPADPRUm9P90HLM='; object-src 'self';
+
+
+Use CSP manager
+
+Use nonce approach for hashing -> means that hash will be appears with different value each time. Every time
+it must be new random value, not jus increment or something simple. Example:
+<script nonce="some_hash">Some script</script> 
