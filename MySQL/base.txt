@@ -1,3 +1,17 @@
 // Base encoding
 
 utf8_general_ci
+
+// for connecting with DB need to use this:
+mysql -u your_username -p -h your_host -P 3306 your_database
+// then need to enter the password
+Enter password: ********
+
+// to watch all tables:
+DESCRIBE db_name;
+
+// to watch the table schema:
+DESCRIBE table_name;
+
+// close connection:
+EXIT; or QUIT;
