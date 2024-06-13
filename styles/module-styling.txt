@@ -1,0 +1,11 @@
+import styles from './Button.module.scss';
+import classnames from 'classNames';
+
+
+const buttonClasses = classnames(
+  styles.Button,
+  {
+    [styles.disabled]: isDisabled,
+    [styles.active]: isActive ,
+  }
+)
