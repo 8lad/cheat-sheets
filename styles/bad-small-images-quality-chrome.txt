@@ -1,0 +1,8 @@
+If you have big resolution for an image and this image uses in small size on the page,
+need to use this for img
+img {
+  overflow-clip-margin: unset;
+  overflow: visible;
+}
+it makes image a bit better. 
+The issue inside the chrom engine

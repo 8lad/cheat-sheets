@@ -1,0 +1,113 @@
+Docker file should be in the same folder, where the project is.
+
+Two most important concepts:
+Images and Containers
+
+Image - lightweight, standalone, executable package (it contains - code, runtime, OS, libraries, system tools)
+It's like a recipe with instructions for an application
+
+Container - is a runnable instance of docker image (it's like a created thing from the recipe)
+Can run multiple containers from a one image.
+
+Docker volumes - Persistent data storage mechanism. It helps to store data from running containers, and separates a data from the other containers .(Because if we'll stop container, the data will dissapear)
+
+Docker network - creates connectivity between containers, for collaboration.
+
+Docker workflow: 
+- Docker client (UI for iterracting with client)
+- Docker Host (Docker daemon)
+- Docker Registry (Docker hub)
+
+Docker syntax:
+
+FROM image[:tag] [AS name] // set the base image to use
+
+FROM ubuntu:20.04 // example
+-----------------------------
+
+WORKDIR /path/to/workdir // path for the following instructions
+
+WORKDIR /app
+-----------------------------
+
+COPY [--chown=<user>:<group>] <src> ... <dest>  // allows to copy from the build to the image
+
+COPY . /app
+-----------------------------
+
+RUN <command> // allows to execute commands in the shell
+
+RUN npm run dev
+-----------------------------
+
+EXPOSE <port> [<port>/<protocol>...]  // set the port where container will listen during runtime
+
+EXPOSE 3000
+-----------------------------
+
+ENV KEY=VALUE // sets env variables during the build process
+
+ENV NODE_ENV=production
+-----------------------------
+
+ARGS <name>[=<default value>] // defines build time variables
+
+ARGS NODE_VERSION=20
+-----------------------------
+
+VOLUME ["/data"]   // create mountpoint. Some kind of storage space that your containers can use to store and share data
+
+VOLUME /myvol
+-----------------------------
+
+CMD ["executable", "param1", "param2"] // provides default commands that execute when the container starts
+
+CMD ["npm", "run", "dev"]
+CMD npm run dev
+-----------------------------
+
+ENTRYPOINT ["executable", "param1", "param2"]  //  instruction in Docker is used to define the main command that gets executed when a container starts, also can combine with CMD
+
+ENTRYPOINT ["echo", "Hello, World!"]
+-----------------------------
+
+The difference between CMD and ENTRYPOINT:
+CMD - more flexible and can be overridden. Default executable
+ENTRYPOINT - can't be overriden. Fixed starting point. If used both, CMD will be passed in the ENTRYPOINT
+
+
+The concept - port mapping:
+Allows to connect a container with the hostmachine
+
+for example, to run on special port need to add this '-p 3333:3333'
+Example docker run -p 5173:5173 react-docker
+
+Commands: 
+
+docker ps : allows to see the list of running containers
+
+docker ps -a : allows to see all containers
+
+docker stop <name | id> : allows to stop the container by name or id
+
+docker container prune : remove all stopped containers
+
+docker rm <name | id> (--force) : remove exact container
+
+docker run -p 5173:5173 -v "$(pwd):<workdir>" -v <workdir> react-docker : allows to watch on the changes in code, -v it's volume, 
+"$(pwd)" shows the current code directory, <workdir> workdirectory for container, -v <workdir> creating volume
+
+docker run -p 5173:5173 -v "$(pwd):/app" -v /app/node_modules react-docker
+
+
+---- Build the image ---
+
+docker build -t react-docker . // where 'react-docker' - the name of container, '.' - the dir where you have the Dockerfile
+
+Docker scout helps to check containers security
+
+------- Work with compose -----
+
+Launch the docker compose: docker compose up
+
+Launch the docker watching: docker compose watch

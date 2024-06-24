@@ -1,0 +1,14 @@
+Image creating
+
+# Didn't work for me # docker build -t react-docker .
+
+# Worked # docker build . -t "react-docker"
+
+Conclusion: the both appriaches are valid, but the first had infinity fetching, (but the first approach Worked
+for simple example), the second instlled normal. Issue perhaps in shel interpritation
+
+
+-------------------------------------
+
+For running vite need to add in the package.json file, in scripts:
+"dev": "vite --host"

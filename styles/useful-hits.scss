@@ -1,0 +1,8 @@
+// Limited text with dots in the end
+
+.target-text {
+	display: -webkit-box;
+	-webkit-line-clamp: 2; // the amount of lines
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
