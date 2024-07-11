@@ -1,0 +1,90 @@
+Frirst of all need to install the biome plugin in the vscode
+Then install biome in the project 
+
+npm install --save-dev --save-exact @biomejs/biome
+
+Initializing the settings file
+
+npx @biomejs/biome init
+
+Other things can find on the official web site
+
+Important notes:
+in the root of the project, need to create a folder .vscode with settings.json inside. The examples of settings:
+
+{
+	"editor.formatOnSave": true,
+	"javascript.format.semicolons": "insert",
+	"editor.defaultFormatter": "biomejs.biome"
+}
+
+or
+
+{
+  "editor.defaultFormatter": "<other formatter>",
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  }
+}
+
+Fromat on save: 
+{
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit"
+  }
+}
+
+Biome understand safe and unsafe changes while linting:
+
+npx @biomejs/biome lint --write ./src // an example of safe fix
+
+npx @biomejs/biome lint --write --unsafe ./src // unsafe fix
+
+main settings are in the biome.json file
+
+The example: 
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "organizeImports": { // this option allows to sort imports
+    "enabled": true
+  },
+  "files": { // here we can set some settings for files, like ignore or include
+    "ignore": ["/node_modules/**", "/geckodriver.exe"]
+  },
+  "linter": { // the rules for whole project for linting
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": { // the name of group rules. More info in the documentation
+        "noConsoleLog": "warn"
+      },
+      "correctness": { // the name of group rules. More info in the documentation
+        "noUnusedVariables": "error"
+      }
+    }
+  },
+  "formatter": { // global format rules for the project
+    "enabled": true,
+    "lineWidth": 80,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "attributePosition": "auto"
+  },
+  "javascript": { // rules for javascript
+    "formatter": { // format rules for js files
+      "quoteStyle": "single",
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "semicolons": "always",
+      "trailingCommas": "all"
+    },
+    "linter": { // linting rules for js files
+      "enabled": true
+    }
+  }
+}
+
+Limitations: biome doesn't support scss and html yet.

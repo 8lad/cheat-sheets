@@ -1,0 +1,49 @@
+The name of file should be something like that: test.spec.js 
+For running tests need to use: mocha <filename | file path | regex with file paths> of npx mocha ....
+
+
+For running several tests in parallel, we need to use this flag: npx mocha --parallel
+It'll save time for the test execution.
+
+!!! - The issue according to this error " Error: Timeout of 2000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves." possible to fix by setting some additional timeout, like there:
+
+describe('Some description text', async function () {
+  this.timeout(30000);
+  let driver;
+
+  ......
+}) // the global solution;
+
+or local:
+
+it('should perform some async operation', function(done) {
+  this.timeout(10000); // Increase to 10 seconds
+
+  // Your async test code here
+  setTimeout(done, 5000); // Simulate async operation
+});
+
+!!! Important: to avoid the error according timeouts, need to launch mocha with the flag '--no-timeouts'
+Example script from package.json:  "mocha-test": "mocha src/**/*  --no-timeouts" 
+
+And we can add some timeouts for some elements that will appear dynamicly.
+There are two ways:
+set it globaly in before function
+
+before(async()=> {
+   await driver.manage().setTimeouts({ implicit: 500 }); // Set implicit wait to 500 ms
+});
+
+or for each it() function
+
+it('Some text', async ()=> {
+  .....
+ await driver.manage().setTimeouts({ implicit: 500 }); // Set implicit wait to 500 ms
+
+  .....
+});
+
+
+For running mocha whith typescript need to use ts-node package. The script example for package.json:
+"test": "mocha -r ts-node/register 'tests/**/*.ts'"
+

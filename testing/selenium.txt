@@ -1,0 +1,8 @@
+There are two important defenitions and tools: web driver and browser driver.
+!!!! Browser driver - need to download on the machine and set the 'path' to the enviroment
+
+There are two ways to set delay: implicitly and explicitly 
+
+implicitly: await driver.manage().setTimeouts({implicit: 5000}); // for waiting when the element appears
+
+explicitly: await driver.wait(until.titleIs(MAIN_PAGE_TITLE), 10000); // for waiting when the page reload or something like this
