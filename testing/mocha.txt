@@ -45,5 +45,10 @@ it('Some text', async ()=> {
 
 
 For running mocha whith typescript need to use ts-node package. The script example for package.json:
-"test": "mocha -r ts-node/register 'tests/**/*.ts'"
+"test": "mocha -r ts-node/register 'tests/**/*.ts'" // but in this case it won't work with impotrs
+
+Mocha itself doesn't support env variables. For fixing this issue need to add 'dotenv' package and use directly in the file
+
+import 'dotenv/config';
+const PATH = `${process.env.SOME_PATH}/test`
 

@@ -1,0 +1,19 @@
+Very similar to mocha. But need to use beforeAll and afterAll hooks.
+For next js and if you use some additional libraries for testing, need to add jest.config.{ts|js}
+
+import type { Config } from 'jest';
+import nextJest from 'next/jest.js';
+
+const createJestConfig = nextJest({
+  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
+  dir: './',
+});
+
+// Add any custom config to be passed to Jest
+const config: Config = {
+  coverageProvider: 'v8',
+  testEnvironment: 'jsdom',
+  modulePathIgnorePatterns: ['<rootDir>/mocha-tests/'], // this line exclude other test files
+};
+
+export default createJestConfig(config);
