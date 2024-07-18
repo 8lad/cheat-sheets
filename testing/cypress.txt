@@ -1,0 +1,2 @@
+Best practice for selecting elements - to use data attribute (data-*)
+Because class, id, and tag can be changed, but data attribute doesn't tie with it and won't affect.
