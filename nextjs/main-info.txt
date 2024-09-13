@@ -17,3 +17,5 @@
 - Error components must be client components!!!!!!
 - The structure of the page folder -> page.js + loading.js + layout.js + error.js
 - For the seo we have static and dynamic metadata
+- getStaticProps - executes during build time. More suit for static data, which doesn't updated frequently
+- getServerSideProps - executes on every request to the server
