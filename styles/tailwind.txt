@@ -1,0 +1,20 @@
+Sticky position may not work if for fixed position will be used classes "bottom-<value>" and other side
+
+!!!!!!!! Will work
+
+    <div>
+        className={clsx(
+          "fixed w-10 h-10 ## top-[94%] ## left-4 border border-solid border-gray-900 dark:border-gray-50 md:top-12 md:border-none md:w-6 md:h-6 md:mt-12 md:ml-3 md:mr-3 z-50 md:sticky bg-gray-50 dark:bg-gray-900",
+          open && "hidden"
+        )}
+      />
+    </div>
+
+!!!!!!!!! Won't work 
+    <div
+        className={clsx(
+          "fixed w-10 h-10 ## bottom-4 ## left-4 border border-solid border-gray-900 dark:border-gray-50 md:top-12 md:border-none md:w-6 md:h-6 md:mt-12 md:ml-3 md:mr-3 z-50 md:sticky bg-gray-50 dark:bg-gray-900",
+          open && "hidden"
+        )}
+      />
+    </div>
