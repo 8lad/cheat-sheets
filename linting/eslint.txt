@@ -1,0 +1,5 @@
+If some rules don't apply (and in the same time everything is installed right),
+probably it can be mistake in the rule name 
+Example
+@typescript-eslint/no-unused-vars // will work
+@tyrescript-eslint/no-unused-vars // won't work @ty_r_ -> missspelling
