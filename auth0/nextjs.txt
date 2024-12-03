@@ -1,0 +1,52 @@
+ ### For full logout from the user account it's requered to use 'a' tag instead of nextjs 'Link' component:
+
+// Won't work
+
+ <Link href='api/auth/logout'>Logout</Link>
+
+// Will work
+
+ <a href='api/auth/logout'>Logout</a> // in this case we fully reload page and remowe all data
+
+
+###################################################################################################
+
+Case when a user click on 'Decline' during sign up. It's necessarry to handle the error 'access_denied'
+Need to update 'route.ts' by this path src\app\api\auth\[auth0]\route.ts
+
+import { MainRoutes } from '@/utils/routes';
+import { handleAuth, handleCallback, handleLogin, handleLogout } from '@auth0/nextjs-auth0';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+const ERROR_SEARCH_PARAM = 'error';
+const USER_DECLINE_ERROR = 'access_denied';
+
+export const GET = handleAuth({
+  login: handleLogin({ returnTo: MainRoutes.Home }),
+  logout: handleLogout({
+    returnTo: MainRoutes.Home,
+  }),
+  // Target function. Here we handle the error by creating extra response
+  callback: (req: NextApiRequest, res: NextApiResponse) => {
+    try {
+      if (req.url) {
+        const url = new URL(req.url);
+        const error = url.searchParams.get(ERROR_SEARCH_PARAM);
+        if (error === USER_DECLINE_ERROR) {
+          return new Response(null, {
+            status: 302,
+            headers: { Location: MainRoutes.Home },
+          });
+        }
+      }
+      return handleCallback(req, res);
+    } catch (error) {
+      console.error(error);
+      new Response(null, {
+        status: 302,
+        headers: { Location: MainRoutes.Home },
+      });
+    }
+  },
+});
+
