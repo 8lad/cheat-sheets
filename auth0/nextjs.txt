@@ -25,6 +25,10 @@ export const GET = handleAuth({
   login: handleLogin({ returnTo: MainRoutes.Home }),
   logout: handleLogout({
     returnTo: MainRoutes.Home,
+    authorizationParams: {
+      prompt: 'login', // This option allows to fix issue when a user decline auth flow, and some data issue
+      // cached. By propmt: 'login' we can choose necessarry account.
+    },
   }),
   // Target function. Here we handle the error by creating extra response
   callback: (req: NextApiRequest, res: NextApiResponse) => {
@@ -37,6 +41,8 @@ export const GET = handleAuth({
             status: 302,
             headers: { Location: MainRoutes.Home },
           });
+          // or instead of returning a new Response it's possible to return logoutHandler
+          //  return handleLogout(req, res, { returnTo: MainRoutes.Home }); // it also works
         }
       }
       return handleCallback(req, res);
